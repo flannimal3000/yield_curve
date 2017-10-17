@@ -53,7 +53,7 @@ For the longer-dated component segments of the yield curve, using a multivariate
 
 ![shorter-duration rates](images/short_duration.png )  ![longer-duration rates](images/long_duration.png )
 
-Multivariate approaches also require more training epochs and wider hidden layers to calibrate properly, compared to univariate approaches, with outcomes that are more sensitive to changes in network parameters.  The below chart compares the prediction results using monthly data and single period prediction window for both the univariate and multivariate approaches.  From left-to-right, the size of the trailing training windows used increase in magnitude.  The multivariate set requires longer relative training windows to achieve comparable RMSE on test sets.  Although not included in the below comparison, including regularization penalty is helpful in improving the results on multivariate training sets with longer windows.
+Multivariate approaches also require more training epochs and wider hidden layers to calibrate properly, compared to univariate approaches, with outcomes that are more sensitive to changes in network parameters.  The below chart compares the prediction results using monthly data and single period prediction window for both the univariate and multivariate approaches.  From left-to-right, the size of the trailing training windows used increase in magnitude.  The multivariate set requires longer relative training windows to achieve comparable RMSE on test sets.  Although not included in the below comparison, including regularization penalty is pretty helpful in improving the results on multivariate training sets with longer windows.
 <br><br>
 ![comparison of univariate and multivariate results](images/uni_v_multi.png ) 
 
