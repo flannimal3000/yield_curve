@@ -17,14 +17,6 @@ Not surprisingly, recurrent neural nets deliver the most promising results.  To 
 ### Data
 Elected to use financial timeseries (interest rates) for the underlying dataset, knowing that they are characterized by a high degree of stochasticity - which is helpful for exposing shortcomings of the various modeling approaches.  Not to weigh in much on efficient market theory, but it's unclear how impactful this sort of approach is in actually predicting future rate levels.  Much smarter people than myself have spent enormous time and energy pursuing this task with limited success.
 
-### Model assessments (summary)
-Recurrent neural networks achieve the best results, and are able to tease out more nuance and structure from the training data, although are pretty easy to overfit given the relatively low dimension nature of this data (used a single layer and 0.20 dropout to help accommodate).  Compared to alternative modeling options, the predictions made by LSTM networks are much better at picking up directional trends and variation in the data. Using **multivariate approaches** (including different parts of the curve when training) is also generally able to **outperform** univariate approaches, when calibrated correctly.  The multivariate approaches require more training epochs and wider hidden layers to achieve better results, and admittedly have outcomes that are more sensitive to parameter calibration (and greater relative benefit from weight regularization).
-
-Autocorrelation for this data degrades over longer time horizons; as such, all of the techniques tend to perform better with shorter prediction windows.  Uniformly, the models deliver lower errors during periods of more contained volatility, regardless of how large of training windows are used. To illustrate this, the first image below compares modeling errors generated when predicting the continuous 30-year rate over 12-period windows (measured by <a href="https://en.wikipedia.org/wiki/Root-mean-square_deviation" target="_blank">root-mean-square error (RMSE)</a>) for various calibrations of LSTM networks, with the median highlighted.  The second image shows how those errors correlate with rolling volatility (shifted back by the size of the prediction window), highlighted in green.
-
-![median RMSE graph](images/rmse.png )  ![volatility vs RMSE comparison](images/rmse_vol_comp.png )
-<br><br>
-
 ### Repo structure
 * (1) *data pull*: code for pulling new data from Federal Reserve API
 * (2) *visual assessment*: using a <a target="_blank" href="https://en.wikipedia.org/wiki/Box%E2%80%93Jenkins_method">Box Jenkins</a>-style approach, a quick visual assessment of the data 
@@ -35,6 +27,14 @@ Autocorrelation for this data degrades over longer time horizons; as such, all o
 * (7) *RNN (univariate)*: keras/tensorflow implementation of an LSTM network, using single variable lags
 * (8) *RNN (multivariate)*: looking at a multivariate implementation of LSTM networks
 * (9) *Supervised learner (random forest)*: not very effective in this context, but exploring the utility of a tree-based regressor (sklearn)
+
+### Model assessments (summary)
+Recurrent neural networks achieve the best results, and are able to tease out more nuance and structure from the training data, although are pretty easy to overfit given the relatively low dimension nature of this data (used a single layer and 0.20 dropout to help accommodate).  Compared to alternative modeling options, the predictions made by LSTM networks are much better at picking up directional trends and variation in the data. Using **multivariate approaches** (including different parts of the curve when training) is also generally able to **outperform** univariate approaches, when calibrated correctly.  The multivariate approaches require more training epochs and wider hidden layers to achieve better results, and admittedly have outcomes that are more sensitive to parameter calibration (and greater relative benefit from weight regularization).
+
+Autocorrelation for this data degrades over longer time horizons; as such, all of the techniques tend to perform better with shorter prediction windows.  Uniformly, the models deliver lower errors during periods of more contained volatility, regardless of how large of training windows are used. To illustrate this, the first image below compares modeling errors generated when predicting the continuous 30-year rate over 12-period windows (measured by <a href="https://en.wikipedia.org/wiki/Root-mean-square_deviation" target="_blank">root-mean-square error (RMSE)</a>) for various calibrations of LSTM networks, with the median highlighted.  The second image shows how those errors correlate with rolling volatility (shifted back by the size of the prediction window), highlighted in green.
+
+![median RMSE graph](images/rmse.png )  ![volatility vs RMSE comparison](images/rmse_vol_comp.png )
+<br><br>
 
 ### Component models
 **Overview**:
