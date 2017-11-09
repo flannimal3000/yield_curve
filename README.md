@@ -58,8 +58,8 @@ Multivariate approaches also require more training epochs and wider hidden layer
 ![comparison of univariate and multivariate results](images/uni_v_multi.png ) 
 
 
-**Other**:
-The approached here only use self-contained data (limited to the histocial observations along the yield curve); I would not recommended using anything like this in production without a more fulsome approach.
+**Warning**:
+The approaches here only use self-contained data (limited to the histocial observations along the yield curve); I would not recommended using anything like this in production without a more fulsome approach.
 
 ## Links:
 There are a lot of different ways to skin this particular cat; here are a few interesting papers detailing alternative approaches:
