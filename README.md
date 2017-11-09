@@ -8,14 +8,14 @@
 -----------------
 ### Summary
 
-This repo contains a series of Jupyter notebooks comparing several approaches to doing timeseries forecasting.  The underlying dataset used pertains to US Treasury yield curve rates (continuous maturity), although is not altogether that relevant to the task.  Specifically, it explores <a href="https://en.wikipedia.org/wiki/Autoregressive_model" target="_blank">autoregressive (AR)</a>, <a href="https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average" target="_blank">autoregressive integrated moving average (ARIMA)</a>, <a href="https://en.wikipedia.org/wiki/Recurrent_neural_network" target="_blank">recurrent neural nets (RNN/LSTM)</a>, and classical machine learning <a href="https://en.wikipedia.org/wiki/Random_forest" target="_blank">(random forest)</a> models.
+This repo contains a series of Jupyter notebooks comparing several approaches to doing timeseries forecasting.  The underlying dataset used pertains to US Treasury yield curve rates (continuous maturity), although is not altogether that relevant to the task.  Specifically, it explores how <a href="https://en.wikipedia.org/wiki/Autoregressive_model" target="_blank">autoregressive (AR)</a>, <a href="https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average" target="_blank">autoregressive integrated moving average (ARIMA)</a>, <a href="https://en.wikipedia.org/wiki/Recurrent_neural_network" target="_blank">recurrent neural nets (RNN/LSTM)</a>, and classical machine learning <a href="https://en.wikipedia.org/wiki/Random_forest" target="_blank">(random forest)</a> models stack up against each other.
 
-Not surprisingly, recurrent neural nets deliver the most promising results.  To illustrate, the animations below compares rolling 12 period forecasts for ARIMA (left) and RNN (right), which arguably overfits.
+Not surprisingly, recurrent neural nets deliver the most promising results.  To illustrate, the animations below compares rolling 12 period forecasts for ARIMA (left) and (an overfit) RNN (right).
 
 ![rolling forecast animation](images/arima_snake.gif.png)  ![rolling forecast animation](images/rnn_mv.gif.png)
 
 ### Data
-Elected to use financial timeseries (interest rates) for the underlying dataset, knowing that they are characterized by a high degree of stochasticity - which is helpful for exposing shortcomings of the various modeling approaches.  Not to weigh in much on efficient market theory, but it's unclear how impactful this sort of approach is in actually predicting future rate levels.  Much smarter people than myself have spent enormous time and energy pursuing this task with limited success.
+Elected to use financial timeseries (interest rates) for the underlying dataset, knowing that they exhibit a high degree of stochasticity - which is helpful for exposing shortcomings of the various approaches.  Not to weigh in much on efficient market theory, but it's unclear how useful this sort of modeling is in actually predicting future rate levels.  Much smarter people than myself have spent enormous time and energy pursuing this task with limited success.
 
 ### Repo structure
 * (1) *data pull*: code for pulling new data from Federal Reserve API
@@ -23,10 +23,10 @@ Elected to use financial timeseries (interest rates) for the underlying dataset,
 * (3) *autoregessive model*: running through simple autoregressive example; addressing stationarity
 * (4) *ARIMA model*: a statsmodels implementation of an autoregressive integrated moving average model
 * (5) *SARIMAX*: for comparison, exploring a statespace model addressing potential seasonality
-* (6) *Prophet*: probably not that relevant for this dataset, but looking at <a target="_blank" href="https://research.fb.com/prophet-forecasting-at-scale/">Prophet</a>, a powerful open-source project out of Facebook 
+* (6) *Prophet*: probably not that relevant for this dataset, but looking at <a target="_blank" href="https://research.fb.com/prophet-forecasting-at-scale/">Prophet</a>, an open-source project out of Facebook 
 * (7) *RNN (univariate)*: keras/tensorflow implementation of an LSTM network, using single variable lags
 * (8) *RNN (multivariate)*: looking at a multivariate implementation of LSTM networks
-* (9) *Supervised learner (random forest)*: not very effective in this context, but exploring the utility of a tree-based regressor (sklearn)
+* (9) *Supervised learner (random forest)*: exploring the utility of a tree-based regressor (sklearn)
 
 ### Model assessments (summary)
 Recurrent neural networks achieve the best results, and are able to tease out more nuance and structure from the training data, although are pretty easy to overfit given the relatively low dimension nature of this data (used a single layer and 0.20 dropout to help accommodate).  Compared to alternative modeling options, the predictions made by LSTM networks are much better at picking up directional trends and variation in the data. Using **multivariate approaches** (including different parts of the curve when training) is also generally able to **outperform** univariate approaches, when calibrated correctly.  The multivariate approaches require more training epochs and wider hidden layers to achieve better results, and admittedly have outcomes that are more sensitive to parameter calibration (and greater relative benefit from weight regularization).
@@ -43,8 +43,8 @@ Autocorrelation for this data degrades over longer time horizons; as such, all o
 Pretty limited predictive insight.  Given the stochastic nature of the data, the 'best' AR results achieved basically by straightlining forward recent observations.<br>
 * `Autogressive integrated moving average (ARIMA)`:<br>
 Incremental improvements over simple AR model, although also pretty uninformative, beyond confirming that recent results are a good starting point for predictions.<br>
-* `Random forest`: Works well on certain parts of the test data, poorly on others; probably needs more robust data to deliver better regression results.  More preprocessing required to squeeze out performance.<br>
-* `Recurrent neural net (LSTM)`: Most promising modeling choice, although easy to overfit.  Able to pick up on short-term patterns in trajectory changes and runs that occur in the historical observations.<br>
+* `Random forest`: Works well on certain parts of the test data, poorly on others; more preprocessing/feature engineering is required to squeeze out more predictive performance.<br>
+* `Recurrent neural net (LSTM)`: Most promising model choice, although easy to overfit.  Able to pick up on short-term patterns in trajectory changes and runs that occur in the historical observations.<br>
 <br>
 
 ### Univariate vs. Multivariate approaches
@@ -59,7 +59,7 @@ Multivariate approaches also require more training epochs and wider hidden layer
 
 
 **Other**:
-The analyses only uses self-contained data (limited to histocial observations along the yield curve); as such, it would not be recommended to put anything like this into production without a more fulsome approach.
+The approached here only use self-contained data (limited to the histocial observations along the yield curve); I would not recommended using anything like this in production without a more fulsome approach.
 
 ## Links:
 There are a lot of different ways to skin this particular cat; here are a few interesting papers detailing alternative approaches:
